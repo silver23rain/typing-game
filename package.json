@@ -1,0 +1,23 @@
+{
+    "name": "typing-game",
+    "version": "1.0.0",
+    "description": "",
+    "private": true,
+    "scripts": {
+        "dev": "./node_modules/.bin/webpack-dev-server",
+        "build": "./node_modules/.bin/webpack"
+    },
+    "author": "eunbi",
+    "license": "ISC",
+    "devDependencies": {
+        "@babel/core": "^7.12.3",
+        "@babel/preset-env": "^7.12.1",
+        "babel-loader": "^8.2.1",
+        "css-loader": "^5.0.1",
+        "style-loader": "^2.0.0",
+        "webpack": "^4.32.0",
+        "webpack-cli": "^3.3.0",
+        "webpack-dev-server": "^3.11.0"
+    },
+    "dependencies": {}
+}
