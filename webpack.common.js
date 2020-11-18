@@ -1,4 +1,5 @@
 const path = require("path");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
     mode: "none",
@@ -6,15 +7,6 @@ module.exports = {
     output: {
         path: __dirname + "/public",
         filename: "bundle.js",
-    },
-    devtool: "inline-source-map",
-    devServer: {
-        contentBase: path.join(__dirname, "public"),
-        inline: true,
-        hot: true,
-        host: "localhost",
-        port: 3000,
-        open: true,
     },
     module: {
         rules: [
@@ -34,4 +26,10 @@ module.exports = {
             },
         ],
     },
+    plugins: [
+        new MiniCssExtractPlugin({
+            filename: "[name].min.css",
+            chunkFilename: "[id].min.css",
+        }),
+    ],
 };
