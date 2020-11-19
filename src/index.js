@@ -1,11 +1,15 @@
-import "./styles/main.css";
+import { hashRouterPush, initialRoutes } from './router';
+import './styles/main.css';
 
-function component() {
-    const element = document.createElement("div");
+window.addEventListener('DOMContentLoaded', () => {
+	const main = document.getElementById('main');
 
-    element.innerHTML = "hello webpack";
+	initialRoutes(main);
 
-    return element;
-}
-
-document.body.appendChild(component());
+	const hashLinker = document.querySelectorAll('a.route');
+	hashLinker.forEach((el) => {
+		el.addEventListener('click', () => {
+			hashRouterPush(main);
+		});
+	});
+});
