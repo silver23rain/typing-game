@@ -4,13 +4,15 @@ import Error404 from './pages/Error404';
 
 const routes = {
 	'/': StartGame(),
-	'/home': StartGame(),
-	'/end': EndGame(),
+	'/done': EndGame(),
 	'/404': Error404(),
 };
 
 const renderHTML = (el, route) => {
-	el.innerHTML = route;
+	el.innerHTML = route.render();
+	if (route.eventBind) {
+		route.eventBind();
+	}
 };
 
 const getHashRoute = () => {

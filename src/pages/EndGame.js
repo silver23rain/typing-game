@@ -1,5 +1,7 @@
 const EndGame = () => {
-	return `<div>end</div>`;
+	return {
+		render: () => `<div>end</div>`,
+	};
 };
 
 export default EndGame;
