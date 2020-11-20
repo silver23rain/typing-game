@@ -4,8 +4,9 @@
     "description": "",
     "private": true,
     "scripts": {
+        "dev": "webpack-dev-server --progress --config webpack.dev.js",
         "build": "webpack --config webpack.prod.js",
-        "dev": "webpack-dev-server --progress --config webpack.dev.js"
+        "serve": "webpack --config webpack.prod.js && http-server ./public"
     },
     "author": "eunbi",
     "license": "ISC",
