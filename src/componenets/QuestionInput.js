@@ -1,4 +1,4 @@
-import { createElement } from '../common';
+import { createElement, getElById } from '../common';
 
 const QuestionInput = (nextQuestion, check) => {
 	const handleKeyup = (e) => {
@@ -17,9 +17,13 @@ const QuestionInput = (nextQuestion, check) => {
 				id: 'typing',
 				type: 'text',
 			});
+			input.disabled = true;
 
 			input.addEventListener('keyup', handleKeyup);
 			return input;
+		},
+		redraw: () => {
+			getElById('typing').disabled = false;
 		},
 	};
 };

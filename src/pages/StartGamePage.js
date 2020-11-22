@@ -21,52 +21,59 @@ async function getData(callback) {
 }
 
 const StartGamePage = () => {
+	//state
 	let start = false;
-	let questions;
-	let question = '';
-	let currentScore = '';
-	let interval;
-	let timeout;
+	let questions = [];
+	let question = {};
+	let currentScore = null;
 
+	// child component
+	let currenScore, questionText, questionInput, startButton;
+
+	let interval, timeout;
 	const play = () => {
+		clearSchedule();
+		if (questions.length === 0) {
+			window.location.hash = '#done';
+			return;
+		}
+		question = questions.shift();
+
+		redrawQuestionText();
+		redrawScore(question.second, currentScore);
+
+		timeout = setTimeout(() => {
+			if (interval) {
+				clearInterval(interval);
+			}
+			if (!check(document.getElementById('typing').value)) {
+				redrawScore(question.second, currentScore--);
+			}
+			play();
+		}, question.second * 1000);
+
+		interval = setInterval(() => {
+			redrawScore(--question.second, currentScore);
+		}, 1000);
+	};
+
+	const check = (inputValue) => inputValue === question.text;
+
+	const clearSchedule = () => {
 		if (interval) {
 			clearInterval(interval);
 		}
 		if (timeout) {
 			clearTimeout(timeout);
 		}
-		if (questions.length === 0) {
-			window.location.hash = '#done';
-			return;
-		}
-		question = questions.shift();
-		window.dispatchEvent(new HashChangeEvent('hashchange'));
-		timeout = setTimeout(() => {
-			if (interval) {
-				clearInterval(interval);
-			}
-			if (!check(document.getElementById('typing').value)) {
-				currentScore--;
-				question.second--;
-				window.dispatchEvent(new HashChangeEvent('hashchange'));
-			}
-			play();
-		}, question.second * 1000);
-
-		interval = setInterval(() => {
-			question.second--;
-			window.dispatchEvent(new HashChangeEvent('hashchange'));
-		}, 1000);
 	};
-
-	const check = (inputValue) => inputValue === question.text;
-
 	async function setData() {
 		const data = await fetchData();
 		questions = data;
 		currentScore = questions.length;
+		startButton.redraw(start);
+		questionInput.redraw();
 		play();
-		window.dispatchEvent(new HashChangeEvent('hashchange'));
 	}
 
 	const setStart = () => {
@@ -74,29 +81,34 @@ const StartGamePage = () => {
 		if (start) {
 			setData();
 		} else {
-			if (interval) {
-				clearInterval(interval);
-			}
-			if (timeout) {
-				clearTimeout(timeout);
-			}
+			clearSchedule();
 			location.hash = '#';
 			window.dispatchEvent(new HashChangeEvent('hashchange'));
 		}
 	};
+
+	const redrawQuestionText = () => {
+		questionText.redraw(question.text);
+	};
+	const redrawScore = (sec, score) => {
+		currenScore.redraw(sec, score);
+	};
+
 	const render = () => {
 		const box = document.createElement('div');
 		box.classList.add('box');
 
-		box.appendChild(
-			CurrentScore(
-				question.second ? question.second : '',
-				currentScore
-			).render()
-		);
-		box.appendChild(QuestionText(question.text).render());
-		box.appendChild(QuestionInput(play, check).render());
-		box.appendChild(StartGameButton(start, setStart).render());
+		currenScore = CurrentScore();
+		box.appendChild(currenScore.render());
+
+		questionText = QuestionText();
+		box.appendChild(questionText.render());
+
+		questionInput = QuestionInput(play, check);
+		box.appendChild(questionInput.render());
+
+		startButton = StartGameButton(setStart);
+		box.appendChild(startButton.render());
 
 		return box;
 	};

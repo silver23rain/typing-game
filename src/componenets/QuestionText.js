@@ -1,14 +1,13 @@
 import { createElement, getElById } from '../common';
 
-const QuestionText = (question) => {
+const QuestionText = () => {
 	return {
 		render: () => {
 			const h1 = createElement('h1', { id: 'question' });
-			h1.textContent = question;
 			return h1;
 		},
 		redraw: (question) => {
-			getElById('question').textContent = question;
+			document.getElementById('question').textContent = question;
 		},
 	};
 };
