@@ -12,7 +12,7 @@ module.exports = {
 		rules: [
 			{
 				test: /\.css$/,
-				use: ['style-loader', 'css-loader'],
+				use: [MiniCssExtractPlugin.loader, 'css-loader'],
 			},
 			{
 				test: /\.js$/,
@@ -28,8 +28,7 @@ module.exports = {
 	},
 	plugins: [
 		new MiniCssExtractPlugin({
-			filename: '[name].min.css',
-			chunkFilename: '[id].min.css',
+			filename: 'app.css',
 		}),
 	],
 };
