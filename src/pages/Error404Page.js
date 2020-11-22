@@ -1,8 +1,12 @@
+const { createElement } = require('../common');
+
 const Error404Page = () => {
 	return {
-		render: () => `<div>
-        404
-    </div>`,
+		render: () => {
+			const h1 = createElement('h1');
+			h1.textContent = '페이지를 찾을 수 없습니다.';
+			return h1;
+		},
 	};
 };
 
