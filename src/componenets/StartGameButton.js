@@ -1,19 +1,20 @@
 import { createElement, getElById } from '../common';
 
-const StartGameButton = (setStart) => {
+const StartGameButton = (start, setStart) => {
 	const render = () => {
 		const gameStartBtn = createElement('button', { id: 'game_btn' });
-		gameStartBtn.textContent = '시작';
 		gameStartBtn.addEventListener('click', setStart);
+		gameStartBtn.textContent = start ? '초기화' : '시작';
+		const link = createElement('a', {
+			route: '/',
+		});
 
-		return gameStartBtn;
+		link.appendChild(gameStartBtn);
+		return link;
 	};
 
 	return {
 		render,
-		redraw: (start) => {
-			getElById('game_btn').textContent = start ? '초기화' : '시작';
-		},
 	};
 };
 

@@ -15,11 +15,6 @@ const fetchData = () => {
 	});
 };
 
-async function getData(callback) {
-	const data = await fetchData();
-	callback(data);
-}
-
 const StartGamePage = () => {
 	//state
 	let start = false;
@@ -34,7 +29,12 @@ const StartGamePage = () => {
 	const play = () => {
 		clearSchedule();
 		if (questions.length === 0) {
-			window.location.hash = '#done';
+			history.pushState(
+				{ score: currentScore },
+				'/done',
+				window.location.origin + '/done'
+			);
+			window.dispatchEvent(new PopStateEvent('popstate'));
 			return;
 		}
 		question = questions.shift();
@@ -71,19 +71,13 @@ const StartGamePage = () => {
 		const data = await fetchData();
 		questions = data;
 		currentScore = questions.length;
-		startButton.redraw(start);
-		questionInput.redraw();
 		play();
 	}
 
 	const setStart = () => {
 		start = !start;
-		if (start) {
-			setData();
-		} else {
+		if (!start) {
 			clearSchedule();
-			location.hash = '#';
-			window.dispatchEvent(new HashChangeEvent('hashchange'));
 		}
 	};
 
@@ -95,6 +89,9 @@ const StartGamePage = () => {
 	};
 
 	const render = () => {
+		if (start) {
+			setData();
+		}
 		const box = document.createElement('div');
 		box.classList.add('box');
 
@@ -104,10 +101,10 @@ const StartGamePage = () => {
 		questionText = QuestionText();
 		box.appendChild(questionText.render());
 
-		questionInput = QuestionInput(play, check);
+		questionInput = QuestionInput(start, play, check);
 		box.appendChild(questionInput.render());
 
-		startButton = StartGameButton(setStart);
+		startButton = StartGameButton(start, setStart);
 		box.appendChild(startButton.render());
 
 		return box;

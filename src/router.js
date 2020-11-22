@@ -8,26 +8,30 @@ const routes = {
 	'/404': Error404Page(),
 };
 
-const renderHTML = (el, route) => {
-	el.innerHTML = '';
-	el.appendChild(route.render());
+const renderHTML = (route) => {
+	const app = document.getElementById('app');
+	app.innerHTML = '';
+	app.appendChild(route.render());
+
+	const links = document.querySelectorAll('a[route]');
+	if (links) {
+		[...links].forEach((link) => {
+			link.addEventListener('click', (e) => {
+				const path = e.currentTarget.getAttribute('route');
+				historyRouterPush(path);
+			});
+		});
+	}
 };
 
-const getHashRoute = () => {
-	const route = Object.keys(routes).find(
-		(r) => r.replace('/', '') === window.location.hash.replace('#', '')
-	);
-
-	return route ? routes[route] : routes['/404'];
+export const initialRoutes = () => {
+	renderHTML(getPath());
+	window.onpopstate = () => renderHTML(getPath());
 };
 
-export const initialRoutes = (el) => {
-	renderHTML(el, getHashRoute());
-	window.addEventListener('hashchange', () => {
-		renderHTML(el, getHashRoute());
-	});
-};
+const getPath = () => routes[window.location.pathname];
 
-export const hashRouterPush = (el) => {
-	renderHTML(el, getHashRoute());
-};
+function historyRouterPush(pathName) {
+	history.pushState({}, pathName, window.location.origin + pathName);
+	renderHTML(routes[pathName]);
+}
