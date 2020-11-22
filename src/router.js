@@ -29,7 +29,10 @@ export const initialRoutes = () => {
 	window.onpopstate = () => renderHTML(getPath());
 };
 
-const getPath = () => routes[window.location.pathname];
+const getPath = () =>
+	routes[window.location.pathname]
+		? routes[window.location.pathname]
+		: routes['/404'];
 
 function historyRouterPush(pathName) {
 	history.pushState({}, pathName, window.location.origin + pathName);
