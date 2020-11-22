@@ -22,7 +22,7 @@ const getHashRoute = () => {
 };
 
 export const initialRoutes = (el) => {
-	renderHTML(el, routes['/']);
+	renderHTML(el, getHashRoute());
 	window.addEventListener('hashchange', () => {
 		renderHTML(el, getHashRoute());
 	});
