@@ -16,11 +16,11 @@ const QuestionInput = (start, nextQuestion, check) => {
 			const input = createElement('input', {
 				id: 'typing',
 				type: 'text',
+				autofocus: '',
 			});
 			if (!start) {
 				input.disabled = true;
 			}
-
 			input.addEventListener('keyup', handleKeyup);
 			return input;
 		},

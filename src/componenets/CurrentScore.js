@@ -3,12 +3,13 @@ import { createElement, getElById } from '../common';
 const CurrentScore = () => {
 	return {
 		render: () => {
-			const div = createElement('div');
+			const div = createElement('div', {
+				className: ['status'],
+			});
 			div.innerHTML = `
-                <div>
                     <p>남은시간 : <span id="left_sec"></span>초</p>
                     <p>점수 : <span id="current_score"></span>점</p>
-                </div>`;
+                `;
 			return div;
 		},
 		redraw: (sec, score) => {

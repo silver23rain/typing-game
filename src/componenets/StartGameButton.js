@@ -1,4 +1,4 @@
-import { createElement, getElById } from '../common';
+import { createElement } from '../common';
 
 const StartGameButton = (start, setStart) => {
 	const render = () => {

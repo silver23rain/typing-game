@@ -2,7 +2,7 @@ import CurrentScore from '../componenets/CurrentScore';
 import QuestionInput from '../componenets/QuestionInput';
 import QuestionText from '../componenets/QuestionText';
 import StartGameButton from '../componenets/StartGameButton';
-
+import '../styles/StartGamePage.css';
 const fetchData = () => {
 	return new Promise((resolve) => {
 		fetch('https://my-json-server.typicode.com/kakaopay-fe/resources/words')
@@ -28,7 +28,14 @@ const StartGamePage = () => {
 	let currenScore, questionText, questionInput, startButton;
 
 	let interval, timeout;
-
+	const clearSchedule = () => {
+		if (interval) {
+			clearInterval(interval);
+		}
+		if (timeout) {
+			clearTimeout(timeout);
+		}
+	};
 	const redirectGameDone = () => {
 		setStart();
 
@@ -70,22 +77,6 @@ const StartGamePage = () => {
 
 	const check = (inputValue) => inputValue === question.text;
 
-	const clearSchedule = () => {
-		if (interval) {
-			clearInterval(interval);
-		}
-		if (timeout) {
-			clearTimeout(timeout);
-		}
-	};
-	async function setData() {
-		const data = await fetchData();
-		questions = data;
-		currentScore = questions.length;
-		questionsLength = questions.length;
-		nextQuestion();
-	}
-
 	const setStart = () => {
 		start = !start;
 		if (!start) {
@@ -99,6 +90,15 @@ const StartGamePage = () => {
 	const redrawScore = (sec, score) => {
 		currenScore.redraw(sec, score);
 	};
+
+	async function setData() {
+		const data = await fetchData();
+		time = 0;
+		questions = data;
+		currentScore = questions.length;
+		questionsLength = questions.length;
+		nextQuestion();
+	}
 
 	const render = () => {
 		if (start) {
