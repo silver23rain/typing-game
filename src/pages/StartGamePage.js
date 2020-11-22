@@ -20,8 +20,7 @@ const StartGamePage = () => {
 	let start = false;
 	let questions = [];
 	let question = {};
-	let questionsLength;
-	let time = 0;
+	let totalTime = 0;
 	let currentScore = null;
 
 	// child component
@@ -39,7 +38,7 @@ const StartGamePage = () => {
 	const redirectGameDone = () => {
 		setStart();
 
-		const avgSec = Math.round(time / questionsLength);
+		const avgSec = Math.round(totalTime / currentScore);
 		history.pushState(
 			{ score: currentScore, avgSec },
 			'/done',
@@ -56,6 +55,8 @@ const StartGamePage = () => {
 		}
 
 		question = questions.shift();
+		let time = question.second;
+
 		redrawQuestionText();
 		redrawScore(question.second, currentScore);
 
@@ -66,11 +67,12 @@ const StartGamePage = () => {
 			if (!check(document.getElementById('typing').value)) {
 				redrawScore(question.second, currentScore--);
 			}
+			totalTime -= time;
 			nextQuestion();
-		}, question.second * 1000);
+		}, (question.second + 1) * 1000);
 
 		interval = setInterval(() => {
-			time++;
+			++totalTime;
 			redrawScore(--question.second, currentScore);
 		}, 1000);
 	};
@@ -93,10 +95,9 @@ const StartGamePage = () => {
 
 	async function setData() {
 		const data = await fetchData();
-		time = 0;
+		totalTime = 0;
 		questions = data;
 		currentScore = questions.length;
-		questionsLength = questions.length;
 		nextQuestion();
 	}
 
