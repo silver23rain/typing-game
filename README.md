@@ -15,7 +15,7 @@ npm install --global http-server
 ### `npm run dev`
 
 개발 모드에서 앱을 실행합니다.
-http://localhost:3000 을 열어 브라우저에서 봅니다.
+http://localhost:3000 을 열어 브라우저에서 확인할 수 있습니다
 
 수정하면 페이지가 다시로드됩니다.
 

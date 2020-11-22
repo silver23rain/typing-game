@@ -1,15 +1,8 @@
-import { hashRouterPush, initialRoutes } from './router';
-import './styles/main.css';
+import { initialRoutes } from './router';
+import './styles/app.css';
 
 window.addEventListener('DOMContentLoaded', () => {
-	const main = document.getElementById('main');
+	const app = document.getElementById('app');
 
-	initialRoutes(main);
-
-	const hashLinker = document.querySelectorAll('a.route');
-	hashLinker.forEach((el) => {
-		el.addEventListener('click', () => {
-			hashRouterPush(main);
-		});
-	});
+	initialRoutes(app);
 });

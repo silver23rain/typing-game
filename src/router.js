@@ -1,18 +1,16 @@
-import EndGame from './pages/EndGame';
-import StartGame from './pages/StartGame';
-import Error404 from './pages/Error404';
+import EndGamePage from './pages/EndGamePage';
+import StartGamePage from './pages/StartGamePage';
+import Error404Page from './pages/Error404Page';
 
 const routes = {
-	'/': StartGame(),
-	'/done': EndGame(),
-	'/404': Error404(),
+	'/': StartGamePage(),
+	'/done': EndGamePage(),
+	'/404': Error404Page(),
 };
 
 const renderHTML = (el, route) => {
-	el.innerHTML = route.render();
-	if (route.eventBind) {
-		route.eventBind();
-	}
+	el.innerHTML = '';
+	el.appendChild(route.render());
 };
 
 const getHashRoute = () => {

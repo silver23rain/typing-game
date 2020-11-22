@@ -1,4 +1,4 @@
-const Error404 = () => {
+const Error404Page = () => {
 	return {
 		render: () => `<div>
         404
@@ -6,4 +6,4 @@ const Error404 = () => {
 	};
 };
 
-export default Error404;
+export default Error404Page;
