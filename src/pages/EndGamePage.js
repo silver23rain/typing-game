@@ -2,7 +2,7 @@ import { createElement } from '../common';
 
 const EndGamePage = () => {
 	const render = () => {
-		const { score, avgSec } = history.state;
+		const { score = 0, avgSec = 0 } = history.state;
 
 		const root = createElement('div', { className: ['box'] });
 
