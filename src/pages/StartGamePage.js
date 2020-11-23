@@ -3,13 +3,18 @@ import QuestionInput from '../componenets/QuestionInput';
 import QuestionText from '../componenets/QuestionText';
 import StartGameButton from '../componenets/StartGameButton';
 import '../styles/StartGamePage.css';
+
 const fetchData = () => {
-	return new Promise((resolve) => {
+	return new Promise((resolve, reject) => {
 		fetch('https://my-json-server.typicode.com/kakaopay-fe/resources/words')
 			.then(function (response) {
 				return response.json();
 			})
 			.then(function (myJson) {
+				if (!myJson || myJson.length === 0) {
+					reject('표시할 문제가 없습니다.');
+				}
+
 				resolve(myJson);
 			});
 	});
@@ -94,16 +99,25 @@ const StartGamePage = () => {
 	};
 
 	async function setData() {
-		const data = await fetchData();
-		totalTime = 0;
-		questions = data;
-		currentScore = questions.length;
-		nextQuestion();
+		let data;
+		try {
+			data = await fetchData();
+			totalTime = 0;
+			questions = data;
+			currentScore = questions.length;
+			nextQuestion();
+		} catch (error) {
+			throw new Error(error);
+		}
 	}
 
 	const render = () => {
 		if (start) {
-			setData();
+			setData().catch(() => {
+				setStart();
+				history.pushState({}, '/', window.location.origin + '/');
+				window.dispatchEvent(new PopStateEvent('popstate'));
+			});
 		}
 		const box = document.createElement('div');
 		box.classList.add('box');
