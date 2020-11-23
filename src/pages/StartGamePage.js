@@ -1,23 +1,18 @@
+import fetchQuestion from '../api/fetchQuestions';
 import CurrentScore from '../componenets/CurrentScore';
 import QuestionInput from '../componenets/QuestionInput';
 import QuestionText from '../componenets/QuestionText';
 import StartGameButton from '../componenets/StartGameButton';
 import '../styles/StartGamePage.css';
 
-const fetchData = () => {
-	return new Promise((resolve, reject) => {
-		fetch('https://my-json-server.typicode.com/kakaopay-fe/resources/words')
-			.then(function (response) {
-				return response.json();
-			})
-			.then(function (myJson) {
-				if (!myJson || myJson.length === 0) {
-					reject('표시할 문제가 없습니다.');
-				}
-
-				resolve(myJson);
-			});
-	});
+let interval, timeout;
+const clearSchedule = () => {
+	if (interval) {
+		clearInterval(interval);
+	}
+	if (timeout) {
+		clearTimeout(timeout);
+	}
 };
 
 const StartGamePage = () => {
@@ -31,15 +26,6 @@ const StartGamePage = () => {
 	// child component
 	let currenScore, questionText, questionInput, startButton;
 
-	let interval, timeout;
-	const clearSchedule = () => {
-		if (interval) {
-			clearInterval(interval);
-		}
-		if (timeout) {
-			clearTimeout(timeout);
-		}
-	};
 	const redirectGameDone = () => {
 		setStart();
 
@@ -94,6 +80,7 @@ const StartGamePage = () => {
 	const redrawQuestionText = () => {
 		questionText.redraw(question.text);
 	};
+
 	const redrawScore = (sec, score) => {
 		currenScore.redraw(sec, score);
 	};
@@ -101,7 +88,7 @@ const StartGamePage = () => {
 	async function setData() {
 		let data;
 		try {
-			data = await fetchData();
+			data = await fetchQuestion();
 			totalTime = 0;
 			questions = data;
 			currentScore = questions.length;
